@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+<a name="readme-top"></a>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="right">
+  <a href="https://practicum.yandex.ru">
+    <img src="https://github.com/Suestado/how-to-learn/raw/main/images/logo_place_header.svg" alt="Yandex Praktikum" width="228" height="32">
+  </a>
 
-## Available Scripts
+<h1 align="center">Mesto</h1>
 
-In the project directory, you can run:
+  <p align="center">
+    Short page about beautiful places in Russia.
+  </p>
+</div>
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## About The Project
+____
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The page contains information about some beautiful and interesting places that are worth visiting if you live in Russia or come as a tourist.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### Built With
+____
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The page is made using the basic and most used HTML & CSS tools.
+Several JS features are used.
+The block model of the document allows you to use blocks on other pages and sites.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* HTML
+  * relevant semantic
+  * images
+  * links
+* CSS
+  * BEM structure
+  * flex
+  * grid
+  * adaptive layout
+  * media queries
+  * animation
+* JS
+  * Modal window
+  * Dynamic page
+  * Modules
+* Webpack
+  * webpack-cli
+  * webpack-dev-server
+  * Babel
+  * Minification
+* React
+  * Base React app functionality
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Roadmap
+____
 
-### `npm run eject`
+- [x] Make a BEM file structure
+- [x] Add animation
+- [ ] Add links to third-party resources
+- [x] Make adaptive layout for different devices
+- [X] Add information about new interesting places
+- [x] Add likes
+- [x] Add ability to download personal places
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contact
+____
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Sergey Kiselev - [GitHub](https://github.com/Suestado)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Project Link: [https://suestado.github.io/mesto/](https://suestado.github.io/mesto/)

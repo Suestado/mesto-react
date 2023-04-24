@@ -1,6 +1,42 @@
+import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
+import Api from './utils/Api.js';
+import Card from './Card.js';
+import ImagePopup from './ImagePopup.js';
 
 function Main(props) {
+
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(() => {
+    Api.getUserInfo()
+      .then((data) => {
+        setUserName(data.name);
+        setUserDescription(data.about);
+        setUserAvatar(data.avatar);
+      })
+      .catch((err) => {
+        console.log(`Данные пользователя не могут быть загружены с сервера: Error: ${err}`);
+      });
+
+    Api.getInitialCards()
+      .then((data) => setCards(data))
+      .catch((err) => {
+        console.log(`Стартовые карточки не могут быть загружены с сервера: Error: ${err}`);
+      });
+  }, []);
+
+  const cardsList = cards.map((card) => {
+    return (
+      <Card
+        key={card._id}
+        cardItem={card}
+        onCardClick={props.handleCardClick}
+      />);
+  });
 
   return (
     <main className="main-content">
@@ -9,12 +45,12 @@ function Main(props) {
           className="profile__avatar-wrapper"
           onClick={props.onEditAvatar}>
           <img className="profile__avatar"
-               src="#"
+               src={userAvatar}
                alt="Аватар"/>
         </div>
         <div className="profile__info">
-          <h1 className="profile__name"/>
-          <p className="profile__description"/>
+          <h1 className="profile__name">{userName}</h1>
+          <p className="profile__description">{userDescription}</p>
         </div>
         <button className="profile__edit-button"
                 type="button"
@@ -24,15 +60,16 @@ function Main(props) {
                 onClick={props.onAddPlace}/>
       </section>
 
-      <section className="elements"/>
+      <section className="elements">
+        {cardsList}
+      </section>
 
       <PopupWithForm
         name="editForm"
         title="Редактировать профиль"
         submitText="Сохранить"
         isOpen={props.isEditProfilePopupOpen}
-        isClose={props.closeAllPopups}
-      >
+        onClose={props.onClose}>
         <fieldset className="popup__fieldset">
           <label>
             <input className="popup__input popup__input_type_editForm-name"
@@ -64,8 +101,7 @@ function Main(props) {
         title="Новое место"
         submitText="Создать"
         isOpen={props.isAddPlacePopupOpen}
-        isClose={props.closeAllPopups}
-      >
+        isClose={props.onClose}>
         <fieldset className="popup__fieldset"
                   id="photoAdd-popup-fieldset">
           <label>
@@ -97,8 +133,7 @@ function Main(props) {
         title="Обновить аватар"
         submitText="Сохранить"
         isOpen={props.isEditAvatarPopupOpen}
-        isClose={props.closeAllPopups}
-      >
+        isClose={props.onClose}>
         <fieldset className="popup__fieldset"
                   id="avatarUpload-popup-fieldset">
           <label>
@@ -113,6 +148,13 @@ function Main(props) {
           </label>
         </fieldset>
       </PopupWithForm>
+
+      <ImagePopup
+        handleCardClick={props.handleCardClick}
+        isImagePopupOpen={props.isImagePopupOpen}
+        card={props.card}
+        onClose={props.onClose}
+      />
     </main>
   );
 }
