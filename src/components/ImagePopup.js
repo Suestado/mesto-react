@@ -1,7 +1,7 @@
 function ImagePopup(props) {
 
   return (
-    <div className={`popup popup_type_photoFullScreen ${props.isImagePopupOpen && "popup_opened"}`}>
+    <div className={`popup popup_type_photoFullScreen ${props.isImagePopupOpen && 'popup_opened'}`}>
       <figure className="popup__picContainer popup__picContainer_type_photoFullScreen">
         <img
           className="popup__image popup__image_type_photoFullScreen"
