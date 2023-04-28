@@ -20,7 +20,7 @@ function PopupWithForm(props) {
                   type="submit"
                   value={props.submitText}
                   name={`submit_${props.name}`}
-                  id={`submit_${props.name}`}>{props.submitText}
+                  id={`submit_${props.name}`}>{props.submitText || 'Сохранить'}
           </button>
         </form>
       </div>

@@ -29,9 +29,6 @@ function App() {
         onEditAvatar={() => setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)}
         onImagePopup={() => setIsImagePopupOpen(!setIsImagePopupOpen)}
         onClose={closeAllPopups}
-        isEditProfilePopupOpen={isEditProfilePopupOpen}
-        isAddPlacePopupOpen={isAddPlacePopupOpen}
-        isEditAvatarPopupOpen={isEditAvatarPopupOpen}
         isImagePopupOpen={isImagePopupOpen}
         handleCardClick={(evt) => {
           setSelectedCard(evt.target);
@@ -45,7 +42,6 @@ function App() {
       <PopupWithForm
         name="editForm"
         title="Редактировать профиль"
-        submitText="Сохранить"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}>
         <fieldset className="popup__fieldset">
@@ -109,7 +105,6 @@ function App() {
       <PopupWithForm
         name="avatarUpload"
         title="Обновить аватар"
-        submitText="Сохранить"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}>
         <fieldset className="popup__fieldset"
