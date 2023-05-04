@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import Main from './Main.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import Api from '../utils/Api';
+import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
 
 function App() {
+  const [currentUser, setCurrentUser] = useState({});
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    Api.getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => {
+        console.log(`Данные пользователя не могут быть загружены с сервера: Error: ${err}`);
+      });
+  }, []);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -20,8 +34,18 @@ function App() {
     setIsImagePopupOpen(false);
   }
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+
+    Api.uploadLikeStatus(isLiked, card._id)
+      .then((newCard) => {
+        setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item));
+      });
+  }
+
+
   return (
-    <>
+    <CurrentUserContext.Provider value={currentUser}>
       <Header/>
       <Main
         onEditProfile={() => setIsEditProfilePopupOpen(!isEditProfilePopupOpen)}
@@ -34,7 +58,9 @@ function App() {
           setSelectedCard(evt.target);
           setIsImagePopupOpen(!isImagePopupOpen);
         }}
-        card={selectedCard}
+        onCardLike={handleCardLike}
+        cards={cards}
+        setCards={setCards}
       />
 
       <Footer/>
@@ -127,7 +153,7 @@ function App() {
         card={selectedCard}
         onClose={closeAllPopups}
       />
-    </>
+    </CurrentUserContext.Provider>
   );
 }
 

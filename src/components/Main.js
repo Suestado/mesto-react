@@ -1,31 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Api from '../utils/Api.js';
 import Card from './Card.js';
+import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
 function Main(props) {
 
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
+  const currentUserContext = useContext(CurrentUserContext);
+
 
   useEffect(() => {
-    Api.getUserInfo()
-      .then((data) => {
-        setUserName(data.name);
-        setUserDescription(data.about);
-        setUserAvatar(data.avatar);
-      })
-      .catch((err) => {
-        console.log(`Данные пользователя не могут быть загружены с сервера: Error: ${err}`);
-      });
-
     Api.getInitialCards()
-      .then((data) => setCards(data))
+      .then((data) => props.setCards(data))
       .catch((err) => {
         console.log(`Стартовые карточки не могут быть загружены с сервера: Error: ${err}`);
       });
   }, []);
+
 
   return (
     <main className="main-content">
@@ -34,12 +24,12 @@ function Main(props) {
           className="profile__avatar-wrapper"
           onClick={props.onEditAvatar}>
           <img className="profile__avatar"
-               src={userAvatar}
+               src={currentUserContext.avatar}
                alt="Аватар"/>
         </div>
         <div className="profile__info">
-          <h1 className="profile__name">{userName}</h1>
-          <p className="profile__description">{userDescription}</p>
+          <h1 className="profile__name">{currentUserContext.name}</h1>
+          <p className="profile__description">{currentUserContext.about}</p>
         </div>
         <button className="profile__edit-button"
                 type="button"
@@ -50,12 +40,13 @@ function Main(props) {
       </section>
 
       <section className="elements">
-        {cards.map((card) => {
+        {props.cards.map((card) => {
           return (
             <Card
               key={card._id}
               cardItem={card}
               onCardClick={props.handleCardClick}
+              onCardLike={props.onCardLike}
             />);
         })}
       </section>
