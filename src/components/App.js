@@ -13,12 +13,13 @@ import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [cards, setCards] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     Api.getUserInfo()
@@ -49,30 +50,47 @@ function App() {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
 
     Api.uploadLikeStatus(isLiked, card._id)
-      .then((newCard) => setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item)));
+      .then((newCard) => setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item)))
+      .catch((err) => console.log(`Лайк не может быть поставлен: Error: ${err}`));
   }
 
   function handleCardDelete(card) {
     Api.removeCard(card._id)
-      .then(() => setCards(cards.filter((item) => item._id !== card._id)));
+      .then(() => setCards(cards.filter((item) => item._id !== card._id)))
+      .catch((err) => console.log(`Карточка не может быть удалена: Error: ${err}`));
   }
 
   function handleUpdateUser(name, about) {
+    setIsUploading(true);
     Api.setUserInfo(name, about)
       .then((data) => setCurrentUser(data))
-      .then(() => closeAllPopups());
+      .catch((err) => console.log(`Данные пользователя не могут быть обновлены: Error: ${err}`))
+      .finally(() => {
+        closeAllPopups();
+        setIsUploading(false);
+      });
   }
 
   function handleUpdateAvatar(avatar) {
+    setIsUploading(true);
     Api.setUserAvatar(avatar)
       .then((data) => setCurrentUser(data))
-      .then(() => closeAllPopups());
+      .catch((err) => console.log(`Аватар пользователя не может быть обновлен: Error: ${err}`))
+      .finally(() => {
+        closeAllPopups();
+        setIsUploading(false);
+      });
   }
 
   function handleAddPlace(name, link) {
+    setIsUploading(true);
     Api.uploadUserCard(name, link)
       .then((newCard) => setCards([newCard, ...cards]))
-      .then(() => closeAllPopups());
+      .catch((err) => console.log(`Карточка пользователя не может быть добавлена: Error: ${err}`))
+      .finally(() => {
+        closeAllPopups();
+        setIsUploading(false);
+      });
   }
 
 
@@ -103,18 +121,21 @@ function App() {
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
         onSubmitPopup={handleUpdateUser}
+        isUploading={isUploading}
       />
 
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
         onSubmitPopup={handleAddPlace}
+        isUploading={isUploading}
       />
 
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
         onSubmitPopup={handleUpdateAvatar}
+        isUploading={isUploading}
       />
 
       <ImagePopup

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function AddPlacePopup({ isOpen, onClose, onSubmitPopup }) {
+function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
   const [placeName, setPlaceName] = useState('');
   const [placeURL, setPlaceURL] = useState('');
@@ -29,6 +29,7 @@ function AddPlacePopup({ isOpen, onClose, onSubmitPopup }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmitPopup={handleSubmitForm}
+      isUploading={isUploading}
     >
       <fieldset className="popup__fieldset"
                 id="photoAdd-popup-fieldset">

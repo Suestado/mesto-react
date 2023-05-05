@@ -24,7 +24,8 @@ function PopupWithForm(props) {
             type="submit"
             value={props.submitText}
             name={`submit_${props.name}`}
-            id={`submit_${props.name}`}>{props.submitText || 'Сохранить'}
+            id={`submit_${props.name}`}>
+            {(props.isOpen && props.isUploading) ? 'Сохранение...' : (props.submitText || 'Сохранить')}
           </button>
         </form>
       </div>

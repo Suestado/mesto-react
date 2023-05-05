@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 import PopupWithForm from './PopupWithForm.js';
 
-function EditProfilePopup({ isOpen, onClose, onSubmitPopup }) {
+function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
   const currentUser = useContext(CurrentUserContext);
   const [valueName, setValueName] = useState('');
@@ -33,6 +33,7 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmitPopup={handleSubmit}
+      isUploading={isUploading}
     >
       <fieldset className="popup__fieldset">
         <label>

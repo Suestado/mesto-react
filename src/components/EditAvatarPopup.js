@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function EditAvatarPopup({ isOpen, onClose, onSubmitPopup}) {
+function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading}) {
   const inputRef = useRef();
 
   function handleSubmit(evt) {
@@ -17,6 +17,7 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup}) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmitPopup={handleSubmit}
+      isUploading={isUploading}
     >
       <fieldset className="popup__fieldset"
                 id="avatarUpload-popup-fieldset">
