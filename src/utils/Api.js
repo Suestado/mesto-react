@@ -45,7 +45,7 @@ class ApiBaseClass {
       )
   }
 
-  setUserAvatar({ avatar }) {
+  setUserAvatar(avatar) {
     return this._request(
         'PATCH',
         this._userAvatarPostfix,

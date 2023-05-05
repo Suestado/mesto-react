@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import Main from './Main.js';
-import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 import Api from '../utils/Api';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
+
 
 
 function App() {
@@ -50,14 +52,21 @@ function App() {
   function handleUpdateUser(name, about) {
     Api.setUserInfo(name, about)
       .then((data) => setCurrentUser(data))
-      .then(() => {
-        closeAllPopups();
-      });
+      .then(() => closeAllPopups());
   }
+
+  function handleUpdateAvatar(avatar) {
+    Api.setUserAvatar(avatar)
+      .then((data) => setCurrentUser(data))
+      .then(() => closeAllPopups())
+  }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+
       <Header/>
+
       <Main
         onEditProfile={() => setIsEditProfilePopupOpen(!isEditProfilePopupOpen)}
         onAddPlace={() => setIsAddPlacePopupOpen(!isAddPlacePopupOpen)}
@@ -76,70 +85,31 @@ function App() {
       />
 
       <Footer/>
+
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
         onSubmitPopup={handleUpdateUser}
       />
 
-      <PopupWithForm
-        name="photoAdd"
-        title="Новое место"
-        submitText="Создать"
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
-      >
-        <fieldset className="popup__fieldset"
-                  id="photoAdd-popup-fieldset">
-          <label>
-            <input className="popup__input popup__input_type_photoAdd-place"
-                   type="text"
-                   name="name"
-                   id="photoAdd-input-text"
-                   placeholder="Название"
-                   required
-                   maxLength="40"
-                   minLength="2"/>
-            <span className="popup__input-error photoAdd-input-text-error"/>
-          </label>
-          <label>
-            <input className="popup__input popup__input_type_photoAdd-link"
-                   type="url"
-                   name="link"
-                   id="photoAdd-input-url"
-                   placeholder="Ссылка на картинку"
-                   required
-                   minLength="2"/>
-            <span className="popup__input-error photoAdd-input-url-error"/>
-          </label>
-        </fieldset>
-      </PopupWithForm>
 
-      <PopupWithForm
-        name="avatarUpload"
-        title="Обновить аватар"
+      />
+
+      <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}>
-        <fieldset className="popup__fieldset"
-                  id="avatarUpload-popup-fieldset">
-          <label>
-            <input className="popup__input popup__input_type_avatarUpload"
-                   type="url"
-                   name="avatar"
-                   id="avatarUpload-input-url"
-                   placeholder="Ссылка на картинку"
-                   required
-                   minLength="2"/>
-            <span className="popup__input-error avatarUpload-input-url-error"/>
-          </label>
-        </fieldset>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onSubmitPopup={handleUpdateAvatar}
+        />
 
       <ImagePopup
         isImagePopupOpen={isImagePopupOpen}
         card={selectedCard}
         onClose={closeAllPopups}
       />
+
     </CurrentUserContext.Provider>
   );
 }
