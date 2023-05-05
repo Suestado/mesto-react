@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import Api from '../utils/Api';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import Main from './Main.js';
@@ -6,9 +8,7 @@ import ImagePopup from './ImagePopup.js';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
-import Api from '../utils/Api';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
-
+import ConfirmCardDelete from './ConfirmCardDelete.js';
 
 
 function App() {
@@ -18,6 +18,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+  const [deletedCardItem, setDeletedCardItem] = useState('');
   const [selectedCard, setSelectedCard] = useState({});
   const [isUploading, setIsUploading] = useState(false);
 
@@ -44,6 +46,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsDeleteConfirmationOpen(false);
   }
 
   function handleCardLike(card) {
@@ -54,10 +57,20 @@ function App() {
       .catch((err) => console.log(`Лайк не может быть поставлен: Error: ${err}`));
   }
 
-  function handleCardDelete(card) {
-    Api.removeCard(card._id)
-      .then(() => setCards(cards.filter((item) => item._id !== card._id)))
-      .catch((err) => console.log(`Карточка не может быть удалена: Error: ${err}`));
+  function handleCardDelete(cardItem) {
+    setIsDeleteConfirmationOpen(true);
+    setDeletedCardItem(cardItem);
+  }
+
+  function confirmCardDelete() {
+    setIsUploading(true);
+    Api.removeCard(deletedCardItem._id)
+      .then(() => setCards(cards.filter((item) => item._id !== deletedCardItem._id)))
+      .catch((err) => console.log(`Карточка не может быть удалена: Error: ${err}`))
+      .finally(() => {
+        closeAllPopups();
+        setIsUploading(false);
+      });
   }
 
   function handleUpdateUser(name, about) {
@@ -142,6 +155,13 @@ function App() {
         isImagePopupOpen={isImagePopupOpen}
         card={selectedCard}
         onClose={closeAllPopups}
+      />
+
+      <ConfirmCardDelete
+        isOpen={isDeleteConfirmationOpen}
+        onClose={closeAllPopups}
+        onSubmitPopup={confirmCardDelete}
+        isUploading={isUploading}
       />
 
     </CurrentUserContext.Provider>

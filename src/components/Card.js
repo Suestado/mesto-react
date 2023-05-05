@@ -5,14 +5,14 @@ function Card({ cardItem, onCardClick, onCardLike, onCardDelete }) {
   const currentUserContext = useContext(CurrentUserContext);
   const currentUser = currentUserContext._id;
   const isOwner = cardItem.owner._id === currentUser;
-  const isLikedByMe = cardItem.likes.some(user => user._id === currentUser)
+  const isLikedByMe = cardItem.likes.some(user => user._id === currentUser);
 
   function handleLikeClick() {
-    onCardLike(cardItem)
+    onCardLike(cardItem);
   }
 
   function handleCardDelete() {
-    onCardDelete(cardItem)
+    onCardDelete(cardItem);
   }
 
   return (
