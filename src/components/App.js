@@ -30,6 +30,14 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    Api.getInitialCards()
+      .then((data) => setCards(data))
+      .catch((err) => {
+        console.log(`Стартовые карточки не могут быть загружены с сервера: Error: ${err}`);
+      });
+  }, []);
+
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -58,7 +66,13 @@ function App() {
   function handleUpdateAvatar(avatar) {
     Api.setUserAvatar(avatar)
       .then((data) => setCurrentUser(data))
-      .then(() => closeAllPopups())
+      .then(() => closeAllPopups());
+  }
+
+  function handleAddPlace(name, link) {
+    Api.uploadUserCard(name, link)
+      .then((newCard) => setCards([newCard, ...cards]))
+      .then(() => closeAllPopups());
   }
 
 
@@ -78,9 +92,8 @@ function App() {
           setSelectedCard(evt.target);
           setIsImagePopupOpen(!isImagePopupOpen);
         }}
-        onCardLike={handleCardLike}
         cards={cards}
-        setCards={setCards}
+        onCardLike={handleCardLike}
         onCardDelete={handleCardDelete}
       />
 
@@ -95,14 +108,14 @@ function App() {
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
-
+        onSubmitPopup={handleAddPlace}
       />
 
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
         onSubmitPopup={handleUpdateAvatar}
-        />
+      />
 
       <ImagePopup
         isImagePopupOpen={isImagePopupOpen}

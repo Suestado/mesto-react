@@ -1,21 +1,10 @@
-import { useEffect, useContext } from 'react';
-import Api from '../utils/Api.js';
+import { useContext } from 'react';
 import Card from './Card.js';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
 function Main(props) {
 
   const currentUserContext = useContext(CurrentUserContext);
-
-
-  useEffect(() => {
-    Api.getInitialCards()
-      .then((data) => props.setCards(data))
-      .catch((err) => {
-        console.log(`Стартовые карточки не могут быть загружены с сервера: Error: ${err}`);
-      });
-  }, []);
-
 
   return (
     <main className="main-content">

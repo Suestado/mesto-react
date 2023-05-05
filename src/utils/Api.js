@@ -55,7 +55,7 @@ class ApiBaseClass {
       )
   }
 
-  uploadUserCard({ name, link }) {
+  uploadUserCard(name, link) {
     return this._request(
         'POST',
         this._cardsDataPostfix,
