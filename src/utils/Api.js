@@ -34,7 +34,7 @@ class ApiBaseClass {
         this._userInfoPostfix)
   }
 
-  setUserInfo({ name, about }) {
+  setUserInfo(name, about) {
     return this._request(
         'PATCH',
         this._userInfoPostfix,

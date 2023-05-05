@@ -4,6 +4,7 @@ import Footer from './Footer.js';
 import Main from './Main.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import Api from '../utils/Api';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 
@@ -38,11 +39,21 @@ function App() {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
 
     Api.uploadLikeStatus(isLiked, card._id)
-      .then((newCard) => {
-        setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item));
-      });
+      .then((newCard) => setCards((cards) => cards.map((item) => item._id === card._id ? newCard : item)));
   }
 
+  function handleCardDelete(card) {
+    Api.removeCard(card._id)
+      .then(() => setCards(cards.filter((item) => item._id !== card._id)));
+  }
+
+  function handleUpdateUser(name, about) {
+    Api.setUserInfo(name, about)
+      .then((data) => setCurrentUser(data))
+      .then(() => {
+        closeAllPopups();
+      });
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -61,47 +72,23 @@ function App() {
         onCardLike={handleCardLike}
         cards={cards}
         setCards={setCards}
+        onCardDelete={handleCardDelete}
       />
 
       <Footer/>
-
-      <PopupWithForm
-        name="editForm"
-        title="Редактировать профиль"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
-        onClose={closeAllPopups}>
-        <fieldset className="popup__fieldset">
-          <label>
-            <input className="popup__input popup__input_type_editForm-name"
-                   id="name-input"
-                   type="text"
-                   name="name"
-                   placeholder="Введите свое имя"
-                   required
-                   maxLength="40"
-                   minLength="2"/>
-            <span className="popup__input-error name-input-error"/>
-          </label>
-          <label>
-            <input className="popup__input popup__input_type_editForm-description"
-                   id="description-input"
-                   type="text"
-                   name="about"
-                   placeholder="Введите свой род занятий"
-                   required
-                   maxLength="200"
-                   minLength="2"/>
-            <span className="popup__input-error description-input-error"/>
-          </label>
-        </fieldset>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onSubmitPopup={handleUpdateUser}
+      />
 
       <PopupWithForm
         name="photoAdd"
         title="Новое место"
         submitText="Создать"
         isOpen={isAddPlacePopupOpen}
-        onClose={closeAllPopups}>
+        onClose={closeAllPopups}
+      >
         <fieldset className="popup__fieldset"
                   id="photoAdd-popup-fieldset">
           <label>

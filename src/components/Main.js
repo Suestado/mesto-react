@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import Api from '../utils/Api.js';
 import Card from './Card.js';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
@@ -47,6 +47,7 @@ function Main(props) {
               cardItem={card}
               onCardClick={props.handleCardClick}
               onCardLike={props.onCardLike}
+              onCardDelete={props.onCardDelete}
             />);
         })}
       </section>
