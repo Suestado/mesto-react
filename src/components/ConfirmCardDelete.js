@@ -1,6 +1,6 @@
 import PopupWithForm from './PopupWithForm.js';
 
-function ConfirmCardDelete({ isOpen, onClose, onSubmitPopup, isUploading }) {
+function ConfirmCardDelete({ isOpen, onClose, onSubmitPopup, isUploading, onOverlayClose }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -14,6 +14,7 @@ function ConfirmCardDelete({ isOpen, onClose, onSubmitPopup, isUploading }) {
       submitText="Да"
       isOpen={isOpen}
       onClose={onClose}
+      onOverlayClose={onOverlayClose}
       onSubmitPopup={handleSubmit}
       isUploading={isUploading}
     />

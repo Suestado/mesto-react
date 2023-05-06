@@ -106,6 +106,13 @@ function App() {
       });
   }
 
+  function handleOverlayClose(evt) {
+    if(evt.target.classList.contains('popup')) {
+      closeAllPopups();
+    }
+  }
+  
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -133,6 +140,7 @@ function App() {
       <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
+        onOverlayClose={handleOverlayClose}
         onSubmitPopup={handleUpdateUser}
         isUploading={isUploading}
       />
@@ -140,6 +148,7 @@ function App() {
       <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
+        onOverlayClose={handleOverlayClose}
         onSubmitPopup={handleAddPlace}
         isUploading={isUploading}
       />
@@ -147,6 +156,7 @@ function App() {
       <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
+        onOverlayClose={handleOverlayClose}
         onSubmitPopup={handleUpdateAvatar}
         isUploading={isUploading}
       />
@@ -155,11 +165,13 @@ function App() {
         isImagePopupOpen={isImagePopupOpen}
         card={selectedCard}
         onClose={closeAllPopups}
+        onOverlayClose={handleOverlayClose}
       />
 
       <ConfirmCardDelete
         isOpen={isDeleteConfirmationOpen}
         onClose={closeAllPopups}
+        onOverlayClose={handleOverlayClose}
         onSubmitPopup={confirmCardDelete}
         isUploading={isUploading}
       />

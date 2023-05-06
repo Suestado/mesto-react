@@ -1,7 +1,25 @@
+import { useEffect } from 'react';
+
 function PopupWithForm(props) {
 
+  useEffect(() => {
+      const handleEscClose = evt => {
+        if(evt.key === 'Escape') {
+          props.onClose()
+        }
+      };
+      document.addEventListener('keydown', handleEscClose);
+
+      return () => {
+        document.removeEventListener('keydown', handleEscClose);
+      };
+  }, [])
+
   return (
-    <div className={`popup popup_type_editForm ${props.isOpen && 'popup_opened'}`}>
+    <div
+      className={`popup popup_type_editForm ${props.isOpen && 'popup_opened'}`}
+      onClick={props.onOverlayClose}
+    >
       <div className="popup__container">
         <h2 className={`popup__title popup__title_type_${props.name}`}>{props.title}</h2>
         <form
