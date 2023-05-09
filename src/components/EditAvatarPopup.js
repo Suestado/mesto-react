@@ -1,13 +1,17 @@
 import { useRef } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverlayClose }) {
+function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
   const inputRef = useRef();
 
-  function handleSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit() {
     onSubmitPopup(inputRef.current.value);
     inputRef.current.value = '';
+  }
+
+  function closePopup() {
+    inputRef.current.value = '';
+    onClose()
   }
 
   return (
@@ -15,9 +19,8 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverla
       name="avatarUpload"
       title="Обновить аватар"
       isOpen={isOpen}
-      onClose={onClose}
-      onOverlayClose={onOverlayClose}
-      onSubmitPopup={handleSubmit}
+      onClose={closePopup}
+      onSubmitPopup={onSubmit}
       isUploading={isUploading}
     >
       <fieldset className="popup__fieldset"
@@ -27,12 +30,15 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverla
             ref={inputRef}
             className="popup__input popup__input_type_avatarUpload"
             type="url"
-            name="avatar"
             id="avatarUpload-input-url"
             placeholder="Ссылка на картинку"
+            name="avatar"
             required
-            minLength="2"/>
-          <span className="popup__input-error avatarUpload-input-url-error"/>
+            minLength="2"
+          />
+          <span
+            className="popup__input-error avatarUpload-input-url-error">
+          </span>
         </label>
       </fieldset>
     </PopupWithForm>

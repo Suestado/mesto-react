@@ -3,22 +3,29 @@ import { useEffect } from 'react';
 function PopupWithForm(props) {
 
   useEffect(() => {
-      const handleEscClose = evt => {
-        if(evt.key === 'Escape') {
-          props.onClose()
-        }
-      };
       document.addEventListener('keydown', handleEscClose);
+      return (
+        document.addEventListener('keydown', handleEscClose)
+      )
+  }, [handleEscClose])
 
-      return () => {
-        document.removeEventListener('keydown', handleEscClose);
-      };
-  }, [])
+  function handleOverlayClose(evt) {
+    if(evt.target.classList.contains('popup')) {
+      props.onClose()
+    }
+  }
+
+  function handleEscClose(evt) {
+    if(evt.key === 'Escape') {
+      props.onClose()
+    }
+  }
+
 
   return (
     <div
       className={`popup popup_type_editForm ${props.isOpen && 'popup_opened'}`}
-      onClick={props.onOverlayClose}
+      onClick={handleOverlayClose}
     >
       <div className="popup__container">
         <h2 className={`popup__title popup__title_type_${props.name}`}>{props.title}</h2>
@@ -38,11 +45,12 @@ function PopupWithForm(props) {
             onClick={props.onClose}
           />
           <button
-            className={`popup__submit popup__submit_type_${props.name}`}
+            className="popup__submit popup__submit_type_${props.name}"
             type="submit"
             value={props.submitText}
             name={`submit_${props.name}`}
-            id={`submit_${props.name}`}>
+            id={`submit_${props.name}`}
+          >
             {(props.isOpen && props.isUploading) ? 'Сохранение...' : (props.submitText || 'Сохранить')}
           </button>
         </form>

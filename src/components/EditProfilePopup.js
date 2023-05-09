@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
 import PopupWithForm from './PopupWithForm.js';
 
-function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverlayClose }) {
+function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
   const currentUser = useContext(CurrentUserContext);
   const [valueName, setValueName] = useState('');
@@ -11,7 +11,8 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverl
   useEffect(() => {
     setValueName(currentUser.name || '');
     setValueDescription(currentUser.about || '');
-  }, [currentUser])
+  }, [currentUser]);
+
 
   function onNameChange(evt) {
     setValueName(evt.target.value);
@@ -26,13 +27,18 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverl
     onSubmitPopup(valueName, valueDescription);
   }
 
+  function closePopup() {
+    setValueName(currentUser.name || '');
+    setValueDescription(currentUser.about || '');
+    onClose();
+  }
+
   return (
     <PopupWithForm
       name="editForm"
       title="Редактировать профиль"
       isOpen={isOpen}
-      onClose={onClose}
-      onOverlayClose={onOverlayClose}
+      onClose={closePopup}
       onSubmitPopup={handleSubmit}
       isUploading={isUploading}
     >
@@ -50,6 +56,7 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading, onOverl
             maxLength="40"
             minLength="2"/>
           <span className="popup__input-error name-input-error"/>
+
         </label>
         <label>
           <input

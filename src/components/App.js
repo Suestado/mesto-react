@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../context/CurrentUserContext.js';
-import Api from '../utils/Api';
+import Api from '../utils/Api.js';
 import Header from './Header.js';
 import Footer from './Footer.js';
 import Main from './Main.js';
@@ -111,7 +111,7 @@ function App() {
       closeAllPopups();
     }
   }
-  
+
 
 
   return (
