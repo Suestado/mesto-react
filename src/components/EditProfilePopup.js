@@ -11,7 +11,7 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
   useEffect(() => {
     setValueName(currentUser.name || '');
     setValueDescription(currentUser.about || '');
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
 
   function onNameChange(evt) {
@@ -27,18 +27,12 @@ function EditProfilePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
     onSubmitPopup(valueName, valueDescription);
   }
 
-  function closePopup() {
-    setValueName(currentUser.name || '');
-    setValueDescription(currentUser.about || '');
-    onClose();
-  }
-
   return (
     <PopupWithForm
       name="editForm"
       title="Редактировать профиль"
       isOpen={isOpen}
-      onClose={closePopup}
+      onClose={onClose}
       onSubmitPopup={handleSubmit}
       isUploading={isUploading}
     >

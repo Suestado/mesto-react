@@ -1,17 +1,16 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
 function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
   const inputRef = useRef();
 
-  function onSubmit() {
-    onSubmitPopup(inputRef.current.value);
+  useEffect(() => {
     inputRef.current.value = '';
-  }
+  }, [isOpen])
 
-  function closePopup() {
-    inputRef.current.value = '';
-    onClose()
+  function onSubmit(evt) {
+    evt.preventDefault();
+    onSubmitPopup(inputRef.current.value);
   }
 
   return (
@@ -19,7 +18,7 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
       name="avatarUpload"
       title="Обновить аватар"
       isOpen={isOpen}
-      onClose={closePopup}
+      onClose={onClose}
       onSubmitPopup={onSubmit}
       isUploading={isUploading}
     >

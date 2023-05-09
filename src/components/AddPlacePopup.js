@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
 function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
   const [placeName, setPlaceName] = useState('');
   const [placeURL, setPlaceURL] = useState('');
+
+  useEffect(() => {
+    setPlaceName('');
+    setPlaceURL('');
+  }, [isOpen])
 
   function onAddPlaceName(evt) {
     setPlaceName(evt.target.value);
@@ -17,14 +22,6 @@ function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
   function handleSubmitForm(evt) {
     evt.preventDefault();
     onSubmitPopup(placeName, placeURL);
-    setPlaceName('');
-    setPlaceURL('');
-  }
-
-  function closePopup() {
-    setPlaceName('');
-    setPlaceURL('');
-    onClose();
   }
 
   return (
@@ -33,7 +30,7 @@ function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
       title="Новое место"
       submitText="Создать"
       isOpen={isOpen}
-      onClose={closePopup}
+      onClose={onClose}
       onSubmitPopup={handleSubmitForm}
       isUploading={isUploading}
     >
