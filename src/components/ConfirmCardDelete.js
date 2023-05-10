@@ -17,6 +17,7 @@ function ConfirmCardDelete({ isOpen, onClose, onSubmitPopup, isUploading, onOver
       onOverlayClose={onOverlayClose}
       onSubmitPopup={handleSubmit}
       isUploading={isUploading}
+      isValid={true}
     />
   );
 }

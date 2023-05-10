@@ -1,27 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import PopupWithForm from './PopupWithForm.js';
 
 function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
-  const [placeName, setPlaceName] = useState('');
-  const [placeURL, setPlaceURL] = useState('');
+  const {
+    register,
+    formState: {
+      errors,
+      isValid
+    },
+    handleSubmit,
+    watch,
+    reset
+  } = useForm({
+    mode: 'onChange'
+  });
 
   useEffect(() => {
-    setPlaceName('');
-    setPlaceURL('');
-  }, [isOpen])
+    reset()
+  }, [isOpen]);
 
-  function onAddPlaceName(evt) {
-    setPlaceName(evt.target.value);
-  }
 
-  function onAddPlaceURL(evt) {
-    setPlaceURL(evt.target.value);
-  }
-
-  function handleSubmitForm(evt) {
-    evt.preventDefault();
-    onSubmitPopup(placeName, placeURL);
+  function onSubmit() {
+    onSubmitPopup(watch("name"), watch("link"))
   }
 
   return (
@@ -31,37 +33,57 @@ function AddPlacePopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
       submitText="Создать"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmitPopup={handleSubmitForm}
+      onSubmitPopup={handleSubmit(onSubmit)}
       isUploading={isUploading}
+      isValid={isValid}
     >
       <fieldset className="popup__fieldset"
                 id="photoAdd-popup-fieldset">
         <label>
           <input
-            value={placeName}
-            onChange={onAddPlaceName}
             className="popup__input popup__input_type_photoAdd-place"
             type="text"
             name="name"
             id="photoAdd-input-text"
             placeholder="Название"
-            required
-            maxLength="40"
-            minLength="2"/>
-          <span className="popup__input-error photoAdd-input-text-error"/>
+            {...register(
+              "name",
+              {
+                required: "Поле обязательно для заполнения",
+                maxLength: {
+                  value: 40,
+                  message: "Текст должен содержать не более 40 символов"
+                },
+                minLength: {
+                  value: 2,
+                  message: "Текст должен содержать не менее 2-х символов"
+                },
+              }
+            )}
+          />
+          <span className={`popup__input-error photoAdd-input-text-error ${errors?.name && "popup__input-error_active"}`}>
+            {errors?.name?.message}
+          </span>
         </label>
         <label>
           <input
-            value={placeURL}
-            onChange={onAddPlaceURL}
             className="popup__input popup__input_type_photoAdd-link"
-            type="url"
             name="link"
             id="photoAdd-input-url"
             placeholder="Ссылка на картинку"
-            required
-            minLength="2"/>
-          <span className="popup__input-error photoAdd-input-url-error"/>
+            {...register(
+              "link",
+              {
+                required: "Поле обязательно для заполнения",
+                minLength: {
+                  value: 2,
+                  message: "Текст должен содержать не менее 2-х символов"
+                },
+              }
+            )}/>
+          <span className={`popup__input-error photoAdd-input-url-error  ${errors?.link && "popup__input-error_active"}`}>
+            {errors?.link?.message}
+          </span>
         </label>
       </fieldset>
     </PopupWithForm>

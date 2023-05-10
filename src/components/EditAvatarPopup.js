@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
+import { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm.js';
-
 
 function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
 
@@ -17,9 +17,12 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
     mode: 'onChange'
   })
 
+  useEffect(() => {
+    reset()
+  }, [isOpen])
+
   function onSubmit() {
     onSubmitPopup(watch("avatar"))
-    reset()
   }
 
   return (
