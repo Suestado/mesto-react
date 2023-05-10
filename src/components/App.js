@@ -67,10 +67,8 @@ function App() {
     Api.removeCard(deletedCardItem._id)
       .then(() => setCards(cards.filter((item) => item._id !== deletedCardItem._id)))
       .catch((err) => console.log(`Карточка не может быть удалена: Error: ${err}`))
-      .then(() => {
-        closeAllPopups();
-        setIsUploading(false);
-      });
+      .then(() => closeAllPopups())
+      .finally(() => setIsUploading(false));
   }
 
   function handleUpdateUser(name, about) {
@@ -78,10 +76,8 @@ function App() {
     Api.setUserInfo(name, about)
       .then((data) => setCurrentUser(data))
       .catch((err) => console.log(`Данные пользователя не могут быть обновлены: Error: ${err}`))
-      .then(() => {
-        closeAllPopups();
-        setIsUploading(false);
-      });
+      .then(() => closeAllPopups())
+      .finally(() => setIsUploading(false));
   }
 
   function handleUpdateAvatar(avatar) {
@@ -89,10 +85,8 @@ function App() {
     Api.setUserAvatar(avatar)
       .then((data) => setCurrentUser(data))
       .catch((err) => console.log(`Аватар пользователя не может быть обновлен: Error: ${err}`))
-      .then(() => {
-        closeAllPopups();
-        setIsUploading(false);
-      });
+      .then(() => closeAllPopups())
+      .finally(() => setIsUploading(false));
   }
 
   function handleAddPlace(name, link) {
@@ -100,10 +94,8 @@ function App() {
     Api.uploadUserCard(name, link)
       .then((newCard) => setCards([newCard, ...cards]))
       .catch((err) => console.log(`Карточка пользователя не может быть добавлена: Error: ${err}`))
-      .then(() => {
-        closeAllPopups();
-        setIsUploading(false);
-      });
+      .then(() => closeAllPopups())
+      .finally(() => setIsUploading(false));
   }
 
   function handleOverlayClose(evt) {
