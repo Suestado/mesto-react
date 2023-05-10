@@ -45,7 +45,7 @@ function PopupWithForm(props) {
             onClick={props.onClose}
           />
           <button
-            className="popup__submit popup__submit_type_${props.name}"
+            className={`popup__submit popup__submit_type_${props.name} ${!props.isValid && "popup__submit_type_disabled"}`}
             type="submit"
             value={props.submitText}
             name={`submit_${props.name}`}

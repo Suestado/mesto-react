@@ -1,16 +1,25 @@
-import { useRef, useEffect } from 'react';
+import { useForm } from 'react-hook-form'
 import PopupWithForm from './PopupWithForm.js';
 
+
 function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
-  const inputRef = useRef();
 
-  useEffect(() => {
-    inputRef.current.value = '';
-  }, [isOpen])
+  const {
+    register,
+    formState: {
+      errors,
+      isValid
+  },
+    handleSubmit,
+    watch,
+    reset
+  } = useForm({
+    mode: 'onChange'
+  })
 
-  function onSubmit(evt) {
-    evt.preventDefault();
-    onSubmitPopup(inputRef.current.value);
+  function onSubmit() {
+    onSubmitPopup(watch("avatar"))
+    reset()
   }
 
   return (
@@ -19,24 +28,34 @@ function EditAvatarPopup({ isOpen, onClose, onSubmitPopup, isUploading }) {
       title="Обновить аватар"
       isOpen={isOpen}
       onClose={onClose}
-      onSubmitPopup={onSubmit}
+      isValid={isValid}
+      onSubmitPopup={handleSubmit(onSubmit)}
       isUploading={isUploading}
     >
       <fieldset className="popup__fieldset"
                 id="avatarUpload-popup-fieldset">
         <label>
           <input
-            ref={inputRef}
             className="popup__input popup__input_type_avatarUpload"
             type="url"
             id="avatarUpload-input-url"
             placeholder="Ссылка на картинку"
-            name="avatar"
-            required
-            minLength="2"
+            {...register(
+              "avatar",
+              {
+                required: 'Поле обязательно к заполнению',
+                minLength: {
+                  value: 2,
+                  message: 'Текст должен содержать не менее 2-х символов'
+                },
+              },
+
+            )}
           />
           <span
-            className="popup__input-error avatarUpload-input-url-error">
+            className={`popup__input-error avatarUpload-input-url-error ${errors?.avatar && "popup__input-error_active"}`}
+          >
+            {errors?.avatar?.message}
           </span>
         </label>
       </fieldset>
